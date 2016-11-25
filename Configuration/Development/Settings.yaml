@@ -1,0 +1,4 @@
+TYPO3:
+  TypoScript:
+    rendering:
+      exceptionHandler: 'Neos\Fusion\Core\ExceptionHandlers\HtmlMessageHandler'
