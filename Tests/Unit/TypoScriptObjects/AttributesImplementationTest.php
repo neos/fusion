@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\TypoScript\Tests\Unit\TypoScriptObjects;
+namespace Neos\Fusion\Tests\Unit\TypoScriptObjects;
 
 /*
- * This file is part of the TYPO3.TypoScript package.
+ * This file is part of the Neos.Fusion package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\TypoScript\Tests\Unit\TypoScriptObjects;
  * source code.
  */
 
-use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\TypoScript\Core\Runtime;
-use TYPO3\TypoScript\TypoScriptObjects\AttributesImplementation;
+use Neos\Utility\ObjectAccess;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Fusion\Core\Runtime;
+use Neos\Fusion\TypoScriptObjects\AttributesImplementation;
 
 /**
  * Testcase for the TypoScript Attributes object
@@ -59,7 +59,7 @@ class AttributesImplementationTest extends UnitTestCase
             return ObjectAccess::getPropertyPath($properties, str_replace('/', '.', $relativePath));
         }));
 
-        $typoScriptObjectName = 'TYPO3.TypoScript:Attributes';
+        $typoScriptObjectName = 'Neos.Fusion:Attributes';
         $renderer = new AttributesImplementation($this->mockTsRuntime, $path, $typoScriptObjectName);
         if ($properties !== null) {
             foreach ($properties as $name => $value) {

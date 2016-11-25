@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\TypoScript\Tests\Functional\TypoScriptObjects;
+namespace Neos\Fusion\Tests\Functional\TypoScriptObjects;
 
 /*
- * This file is part of the TYPO3.TypoScript package.
+ * This file is part of the Neos.Fusion package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -23,9 +23,9 @@ class UriBuilderTest extends AbstractTypoScriptObjectTest
     {
         $this->registerRoute(
             'TypoScript functional test',
-            'typo3/flow/test/http/foo',
+            'neos/flow/test/http/foo',
             array(
-                '@package' => 'TYPO3.Flow',
+                '@package' => 'Neos.Flow',
                 '@subpackage' => 'Tests\Functional\Http\Fixtures',
                 '@controller' => 'Foo',
                 '@action' => 'index',
@@ -34,6 +34,6 @@ class UriBuilderTest extends AbstractTypoScriptObjectTest
 
         $view = $this->buildView();
         $view->setTypoScriptPath('uriBuilder/foo');
-        $this->assertContains('/typo3/flow/test/http/foo', $view->render());
+        $this->assertContains('/neos/flow/test/http/foo', $view->render());
     }
 }

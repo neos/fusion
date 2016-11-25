@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\TypoScript\Tests\Unit\Core\Parser;
+namespace Neos\Fusion\Tests\Unit\Core\Parser;
 
 /*
- * This file is part of the TYPO3.TypoScript package.
+ * This file is part of the Neos.Fusion package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,8 +10,8 @@ namespace TYPO3\TypoScript\Tests\Unit\Core\Parser;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\TypoScript\Core\Parser;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Fusion\Core\Parser;
 
 /**
  * Testcase for the TypoScript Parser - tests the regex patterns
@@ -81,7 +81,7 @@ class PatternTest extends UnitTestCase
         $this->assertEquals(preg_match($pattern, 'namespace: cms = Test'), 1, 'The SCAN_PATTERN_DECLARATION pattern did not match an namespace declaration.');
         $this->assertEquals(preg_match($pattern, '  namespace: cms = Test'), 1, 'The SCAN_PATTERN_DECLARATION pattern did not match an namespace declaration whith leading whitespace.');
         $this->assertEquals(preg_match($pattern, 'ASDF  namespace: cms = Test'), 0, 'The SCAN_PATTERN_DECLARATION pattern did match an namespace declaration whith leading text.');
-        $this->assertEquals(preg_match($pattern, 'ASDF  namespace: TYPO3.Neos = Foo'), 0, 'The SCAN_PATTERN_DECLARATION pattern did match an namespace declaration whith leading text.');
+        $this->assertEquals(preg_match($pattern, 'ASDF  namespace: Neos.Neos = Foo'), 0, 'The SCAN_PATTERN_DECLARATION pattern did match an namespace declaration whith leading text.');
         $this->assertEquals(preg_match($pattern, '// This is a comment ...'), 0, 'The SCAN_PATTERN_DECLARATION pattern matched a comment.');
     }
 
@@ -246,7 +246,7 @@ class PatternTest extends UnitTestCase
     {
         $pattern = Parser::SCAN_PATTERN_OBJECTPATHSEGMENT_IS_PROTOTYPE;
         $this->assertEquals(preg_match($pattern, 'prototype(asf.Ds:1)'), 1, 'The SCAN_PATTERN_OBJECTPATHSEGMENT_IS_PROTOTYPE pattern did not match (1).');
-        $this->assertEquals(preg_match($pattern, 'prototype(TYPO3.Flow:Test)'), 1, 'The SCAN_PATTERN_OBJECTPATHSEGMENT_IS_PROTOTYPE pattern did not match (2).');
+        $this->assertEquals(preg_match($pattern, 'prototype(Neos.Flow:Test)'), 1, 'The SCAN_PATTERN_OBJECTPATHSEGMENT_IS_PROTOTYPE pattern did not match (2).');
         $this->assertEquals(preg_match($pattern, 'message'), 0, 'The SCAN_PATTERN_OBJECTPATHSEGMENT_IS_PROTOTYPE pattern matched(3).');
     }
 
@@ -284,7 +284,7 @@ class PatternTest extends UnitTestCase
     {
         $pattern = Parser::SCAN_PATTERN_VALUEOBJECTTYPE;
 
-        $this->assertEquals(1, preg_match($pattern, 'TYPO3.TypoScript:Foo'), 'It did not match a simple TS Object Type');
+        $this->assertEquals(1, preg_match($pattern, 'Neos.Fusion:Foo'), 'It did not match a simple TS Object Type');
         $this->assertEquals(1, preg_match($pattern, 'Foo'), 'It matched an unqualified TS Object Type');
 
         $expected = array(
@@ -297,13 +297,13 @@ class PatternTest extends UnitTestCase
         $this->assertRegexMatches('Foo', $pattern, $expected, 'Detailed result');
 
         $expected = array(
-            0 => 'TYPO3.TypoScript:Foo',
-            'namespace' => 'TYPO3.TypoScript',
-            1 => 'TYPO3.TypoScript',
+            0 => 'Neos.Fusion:Foo',
+            'namespace' => 'Neos.Fusion',
+            1 => 'Neos.Fusion',
             'unqualifiedType' => 'Foo',
             2 => 'Foo'
         );
-        $this->assertRegexMatches('TYPO3.TypoScript:Foo', $pattern, $expected, 'Detailed result');
+        $this->assertRegexMatches('Neos.Fusion:Foo', $pattern, $expected, 'Detailed result');
     }
 
     public function SPLIT_PATTERN_COMMENTTYPEdataProvider()

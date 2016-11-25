@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\TypoScript\Tests\Unit\Core;
+namespace Neos\Fusion\Tests\Unit\Core;
 
 /*
- * This file is part of the TYPO3.TypoScript package.
+ * This file is part of the Neos.Fusion package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,15 +11,15 @@ namespace TYPO3\TypoScript\Tests\Unit\Core;
  * source code.
  */
 
-use TYPO3\Eel\EelEvaluatorInterface;
-use TYPO3\Eel\ProtectedContext;
-use TYPO3\Flow\Exception;
-use TYPO3\Flow\Mvc\Controller\ControllerContext;
-use TYPO3\Flow\ObjectManagement\ObjectManager;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\TypoScript\Core\ExceptionHandlers\ThrowingHandler;
-use TYPO3\TypoScript\Core\Runtime;
-use TYPO3\TypoScript\Exception\RuntimeException;
+use Neos\Eel\EelEvaluatorInterface;
+use Neos\Eel\ProtectedContext;
+use Neos\Flow\Exception;
+use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\ObjectManagement\ObjectManager;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Fusion\Core\ExceptionHandlers\ThrowingHandler;
+use Neos\Fusion\Core\Runtime;
+use Neos\Fusion\Exception\RuntimeException;
 
 class RuntimeTest extends UnitTestCase
 {
@@ -48,7 +48,7 @@ class RuntimeTest extends UnitTestCase
      *
      * if this handler throws exceptions, they are not handled
      *
-     * @expectedException \TYPO3\Flow\Exception
+     * @expectedException \Neos\Flow\Exception
      * @test
      */
     public function handleRenderingExceptionThrowsException()
@@ -91,7 +91,7 @@ class RuntimeTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\TypoScript\Exception
+     * @expectedException \Neos\Fusion\Exception
      * @expectedExceptionCode 1395922119
      */
     public function evaluateWithCacheModeUncachedAndUnspecifiedContextThrowsException()
@@ -114,12 +114,12 @@ class RuntimeTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception
+     * @expectedException \Neos\Flow\Security\Exception
      */
     public function renderRethrowsSecurityExceptions()
     {
         $controllerContext = $this->getMockBuilder(ControllerContext::class)->disableOriginalConstructor()->getMock();
-        $securityException = new \TYPO3\Flow\Security\Exception();
+        $securityException = new \Neos\Flow\Security\Exception();
         $runtime = $this->getMockBuilder(Runtime::class)->setMethods(array('evaluateInternal', 'handleRenderingException'))->setConstructorArgs(array(array(), $controllerContext))->getMock();
         $runtime->expects($this->any())->method('evaluateInternal')->will($this->throwException($securityException));
 

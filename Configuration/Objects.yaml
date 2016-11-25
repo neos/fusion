@@ -1,13 +1,13 @@
-TYPO3\TypoScript\View\TypoScriptView:
+Neos\Fusion\View\TypoScriptView:
   properties:
     fallbackView:
       object: Neos\FluidAdaptor\View\TemplateView
 
-TYPO3\TypoScript\Core\Cache\ContentCache:
+Neos\Fusion\Core\Cache\ContentCache:
   properties:
     cache:
       object:
-        factoryObjectName: TYPO3\Flow\Cache\CacheManager
+        factoryObjectName: Neos\Flow\Cache\CacheManager
         factoryMethodName: getCache
         arguments:
           1:

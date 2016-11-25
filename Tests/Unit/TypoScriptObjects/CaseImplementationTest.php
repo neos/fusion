@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\TypoScript\Tests\Unit\TypoScriptObjects;
+namespace Neos\Fusion\Tests\Unit\TypoScriptObjects;
 
 /*
- * This file is part of the TYPO3.TypoScript package.
+ * This file is part of the Neos.Fusion package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\TypoScript\Tests\Unit\TypoScriptObjects;
  * source code.
  */
 
-use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\TypoScript\Core\Runtime;
-use TYPO3\TypoScript\TypoScriptObjects\CaseImplementation;
+use Neos\Utility\ObjectAccess;
+use Neos\Fusion\Core\Runtime;
+use Neos\Fusion\TypoScriptObjects\CaseImplementation;
 
 /**
  * Testcase for the Case object
  */
-class CaseImplementationTest extends \TYPO3\Flow\Tests\UnitTestCase
+class CaseImplementationTest extends \Neos\Flow\Tests\UnitTestCase
 {
     /**
      * @test
@@ -38,7 +38,7 @@ class CaseImplementationTest extends \TYPO3\Flow\Tests\UnitTestCase
             return ObjectAccess::getProperty($that, $relativePath, true);
         }));
 
-        $typoScriptObjectName = 'TYPO3.Neos:PrimaryContent';
+        $typoScriptObjectName = 'Neos.Neos:PrimaryContent';
         $renderer = new CaseImplementation($mockTsRuntime, $path, $typoScriptObjectName);
         $renderer->setIgnoreProperties($ignoredProperties);
 
@@ -47,7 +47,7 @@ class CaseImplementationTest extends \TYPO3\Flow\Tests\UnitTestCase
             'condition' => 'true'
         );
 
-        $mockTsRuntime->expects($this->once())->method('render')->with('page/body/content/main/default<TYPO3.TypoScript:Matcher>')->will($this->returnValue('rendered matcher'));
+        $mockTsRuntime->expects($this->once())->method('render')->with('page/body/content/main/default<Neos.Fusion:Matcher>')->will($this->returnValue('rendered matcher'));
 
         $result = $renderer->evaluate();
 

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\TypoScript\Tests\Functional\TypoScriptObjects\Fixtures\Model;
+namespace Neos\Fusion\Tests\Functional\TypoScriptObjects\Fixtures\Model;
 
 /*
- * This file is part of the TYPO3.TypoScript package.
+ * This file is part of the Neos.Fusion package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,7 +10,7 @@ namespace TYPO3\TypoScript\Tests\Functional\TypoScriptObjects\Fixtures\Model;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use TYPO3\Flow\Cache\CacheAwareInterface;
+use Neos\Cache\CacheAwareInterface;
 
 /**
  * A simple cache aware model

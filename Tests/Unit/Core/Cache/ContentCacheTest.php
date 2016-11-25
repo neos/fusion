@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\TypoScript\Tests\Unit\Core\Cache;
+namespace Neos\Fusion\Tests\Unit\Core\Cache;
 
 /*
- * This file is part of the TYPO3.TypoScript package.
+ * This file is part of the Neos.Fusion package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,16 +11,16 @@ namespace TYPO3\TypoScript\Tests\Unit\Core\Cache;
  * source code.
  */
 
-use TYPO3\Flow\Cache\Backend\TransientMemoryBackend;
-use TYPO3\Flow\Cache\CacheAwareInterface;
-use TYPO3\Flow\Cache\Frontend\FrontendInterface;
-use TYPO3\Flow\Cache\Frontend\StringFrontend;
-use TYPO3\Flow\Core\ApplicationContext;
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Security\Context;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\TypoScript\Core\Cache\CacheSegmentParser;
-use TYPO3\TypoScript\Core\Cache\ContentCache;
+use Neos\Flow\Cache\Backend\TransientMemoryBackend;
+use Neos\Cache\CacheAwareInterface;
+use Neos\Cache\Frontend\FrontendInterface;
+use Neos\Cache\Frontend\StringFrontend;
+use Neos\Flow\Core\ApplicationContext;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Fusion\Core\Cache\CacheSegmentParser;
+use Neos\Fusion\Core\Cache\ContentCache;
 
 /**
  * Test case for the ContentCache
@@ -36,7 +36,7 @@ class ContentCacheTest extends UnitTestCase
         return array(
             array('Everything', 'Everything'),
             array('Node_f6dc5e8e-03d9-306f-1572-92ab7a7bc4ef', 'Node_f6dc5e8e-03d9-306f-1572-92ab7a7bc4ef'),
-            array('NodeType_TYPO3.Neos.NodeTypes:Page', 'NodeType_TYPO3_Neos_NodeTypes-Page'),
+            array('NodeType_Neos.NodeTypes:Page', 'NodeType_TYPO3_Neos_NodeTypes-Page'),
             array(
                 'DescendentOf_f6dc5e8e-03d9-306f-1572-92ab7a7bc4ef',
                 'DescendentOf_f6dc5e8e-03d9-306f-1572-92ab7a7bc4ef'
@@ -70,7 +70,7 @@ class ContentCacheTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidEntryIdentifierValues
-     * @expectedException \TYPO3\TypoScript\Exception\CacheException
+     * @expectedException \Neos\Fusion\Exception\CacheException
      * @expectedExceptionCode 1395846615
      */
     public function createCacheSegmentWithInvalidEntryIdentifierValueThrowsException($entryIdentifierValues)

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\TypoScript\Tests\Functional\TypoScriptObjects;
+namespace Neos\Fusion\Tests\Functional\TypoScriptObjects;
 
 /*
- * This file is part of the TYPO3.TypoScript package.
+ * This file is part of the Neos.Fusion package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\TypoScript\Tests\Functional\TypoScriptObjects;
  * source code.
  */
 
-use TYPO3\Flow\Cache\CacheManager;
-use TYPO3\Flow\Cache\Frontend\FrontendInterface;
-use TYPO3\TypoScript\Core\Cache\ContentCache;
-use TYPO3\TypoScript\Tests\Functional\TypoScriptObjects\Fixtures\Model\TestModel;
+use Neos\Flow\Cache\CacheManager;
+use Neos\Cache\Frontend\FrontendInterface;
+use Neos\Fusion\Core\Cache\ContentCache;
+use Neos\Fusion\Tests\Functional\TypoScriptObjects\Fixtures\Model\TestModel;
 
 /**
  * Test case for the TypoScript ContentCache
@@ -330,7 +330,7 @@ class ContentCacheTest extends AbstractTypoScriptObjectTest
             'object' => $object
         ));
 
-        /** @var \TYPO3\Flow\Mvc\ActionRequest $actionRequest */
+        /** @var \Neos\Flow\Mvc\ActionRequest $actionRequest */
         $actionRequest = $this->controllerContext->getRequest();
         $actionRequest->setArgument('currentPage', 1);
 
@@ -401,7 +401,7 @@ class ContentCacheTest extends AbstractTypoScriptObjectTest
         $view->setOption('enableContentCache', true);
         $view->setTypoScriptPath('contentCache/maximumLifetimeInNestedEmbedAndCachedSegments');
 
-        $mockCache = $this->createMock(\TYPO3\Flow\Cache\Frontend\FrontendInterface::class);
+        $mockCache = $this->createMock(\Neos\Cache\Frontend\FrontendInterface::class);
         $this->inject($this->contentCache, 'cache', $mockCache);
 
         $mockCache->expects($this->any())->method('get')->will($this->returnValue(false));
@@ -441,7 +441,7 @@ class ContentCacheTest extends AbstractTypoScriptObjectTest
     public function cacheUsesGlobalCacheIdentifiersAsDefaultPrototypeForEntryIdentifier()
     {
         $entriesWritten = array();
-        $mockCache = $this->createMock(\TYPO3\Flow\Cache\Frontend\FrontendInterface::class);
+        $mockCache = $this->createMock(\Neos\Cache\Frontend\FrontendInterface::class);
         $mockCache->expects($this->any())->method('get')->will($this->returnValue(false));
         $mockCache->expects($this->any())->method('has')->will($this->returnValue(false));
         $mockCache->expects($this->atLeastOnce())->method('set')->will($this->returnCallback(function ($entryIdentifier, $data, $tags, $lifetime) use (&$entriesWritten) {
@@ -464,7 +464,7 @@ class ContentCacheTest extends AbstractTypoScriptObjectTest
 
         $this->assertSame('Cached segment|Object value 1', $firstRenderResult);
 
-        // As the site should be added to the entry identifier because it is in the TYPO3.TypoScript:GlobalCacheIdentifiers prototype, changing the value should give us a different identifier
+        // As the site should be added to the entry identifier because it is in the Neos.Fusion:GlobalCacheIdentifiers prototype, changing the value should give us a different identifier
         $view->assign('site', 'site2');
         $secondRenderResult = $view->render();
         $this->assertSame($firstRenderResult, $secondRenderResult);
@@ -485,7 +485,7 @@ class ContentCacheTest extends AbstractTypoScriptObjectTest
     public function globalIdentifiersAreUsedWithBlankEntryIdentifiers()
     {
         $entriesWritten = array();
-        $mockCache = $this->createMock(\TYPO3\Flow\Cache\Frontend\FrontendInterface::class);
+        $mockCache = $this->createMock(\Neos\Cache\Frontend\FrontendInterface::class);
         $mockCache->expects($this->any())->method('get')->will($this->returnValue(false));
         $mockCache->expects($this->any())->method('has')->will($this->returnValue(false));
         $mockCache->expects($this->atLeastOnce())->method('set')->will($this->returnCallback(function ($entryIdentifier, $data, $tags, $lifetime) use (&$entriesWritten) {
