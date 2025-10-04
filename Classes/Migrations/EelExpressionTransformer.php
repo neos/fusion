@@ -185,9 +185,9 @@ class EelExpressionTransformer
         if ($afxElement['type'] === 'spread') {
             // We found an Eel expression in a spread operation
             $result[] = new EelExpressionPosition(
-                $afxElement['payload']['payload']['contents'],
-                $afxElement['payload']['payload']['from'] + 1,
-                $afxElement['payload']['payload']['to'] + 1,
+                $afxElement['payload']['payload'],
+                $afxElement['from'] + 5, // advance beyond '{...'
+                $afxElement['to'],
                 null
             );
             return;
@@ -196,9 +196,9 @@ class EelExpressionTransformer
         if ($afxElement['type'] === 'expression') {
             // We found an Eel expression
             $result[] = new EelExpressionPosition(
-                $afxElement['payload']['contents'],
-                $afxElement['payload']['from'] + 1,
-                $afxElement['payload']['to'] + 1,
+                $afxElement['payload'],
+                $afxElement['from'] + 2, // advance beyond '{'
+                $afxElement['to'],
                 null
             );
         }
