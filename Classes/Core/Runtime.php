@@ -691,6 +691,16 @@ class Runtime
         }
         $contextVariables['this'] = $contextObject;
 
+        if (class_exists(\Neos\Neos\Domain\Model\Neos9NodeBasedRenderingModeStub::class)) {
+            // Temporary hack, discard with Neos 9.0 with the proper implementation of renderingMode and Fusion Globals.
+            $anyLikelyNode = $contextVariables['site'] ?? $contextVariables['documentNode'] ?? $contextVariables['node'] ?? null;
+            if ($anyLikelyNode instanceof \Neos\ContentRepository\Domain\Model\Node) {
+                $contextVariables['renderingMode'] = \Neos\Neos\Domain\Model\Neos9NodeBasedRenderingModeStub::createFromLegacyNodeContentContext(
+                    $anyLikelyNode->getContext()
+                );
+            }
+        }
+
         /** may have to be phpstan-ignore-next-line'd: the mind of the great phpstan can and will not comprehend this */
         if ($this->eelEvaluator instanceof \Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy) {
             $this->eelEvaluator->_activateDependency();
