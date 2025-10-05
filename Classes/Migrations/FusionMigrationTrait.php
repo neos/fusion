@@ -5,14 +5,28 @@ declare(strict_types=1);
 namespace Neos\Fusion\Migrations;
 
 use Neos\Flow\Core\Migrations\AbstractMigration;
+use Neos\Fusion\Migrations\Helper\RegexCommentTemplatePair;
 
 trait FusionMigrationTrait
 {
+    /**
+     * @var array<string,string>
+     */
     private array $eelReplacementOperations = [];
+
+    /**
+     * @var array<RegexCommentTemplatePair>
+     */
+    private array $regexConditionalCommentsOperations = [];
 
     final public function replaceEelExpression(string $pregSearch, string $pregReplace): void
     {
         $this->eelReplacementOperations[$pregSearch] = $pregReplace;
+    }
+
+    final public function addCommentsIfRegexMatches(string $regex, string $comment): void
+    {
+        $this->regexConditionalCommentsOperations[] = new RegexCommentTemplatePair($regex, $comment);
     }
 
     final protected function applyEelFusionOperations(): void
@@ -38,6 +52,8 @@ trait FusionMigrationTrait
                     return $newExpression;
                 });
             }
+
+            $eelTransformer = $eelTransformer->addCommentsIfRegexesMatch($this->regexConditionalCommentsOperations);
 
             $newContents = $eelTransformer->getProcessedContent();
 
