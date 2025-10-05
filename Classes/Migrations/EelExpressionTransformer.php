@@ -130,7 +130,7 @@ class EelExpressionTransformer
      * @throws ParserException
      * @throws AfxParserException
      */
-    public function findAllEelExpressions(): EelExpressionPositions
+    private function findAllEelExpressions(): EelExpressionPositions
     {
         $eelExpressions = CustomObjectTreeParser::findEelExpressions($this->fileContent);
         $afxExpressions = CustomObjectTreeParser::findAfxExpressions($this->fileContent);

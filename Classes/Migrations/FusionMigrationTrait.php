@@ -1,0 +1,56 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Neos\Fusion\Migrations;
+
+use Neos\Flow\Core\Migrations\AbstractMigration;
+
+trait FusionMigrationTrait
+{
+    private array $eelReplacementOperations = [];
+
+    final public function replaceEelExpression(string $pregSearch, string $pregReplace): void
+    {
+        $this->eelReplacementOperations[$pregSearch] = $pregReplace;
+    }
+
+    final protected function applyEelFusionOperations(): void
+    {
+        $filePaths = new \RegexIterator(
+            new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($this->targetPackageData['path']),
+            ),
+            '/\.fusion$/',
+            \RecursiveRegexIterator::GET_MATCH,
+        );
+
+        foreach ($filePaths as $filePath => $_) {
+            $originalContents = file_get_contents($filePath);
+
+            $eelTransformer = EelExpressionTransformer::parse($originalContents);
+            foreach ($this->eelReplacementOperations as $pregSearch => $pregReplace) {
+                $eelTransformer = $eelTransformer->process(function (string $expression) use ($pregSearch, $pregReplace) {
+                    $newExpression = preg_replace($pregSearch, $pregReplace, $expression);
+                    if ($newExpression === null) {
+                        throw new \RuntimeException(sprintf('Malformed preg replacement for expression %s', $expression), 1759641629);
+                    }
+                    return $newExpression;
+                });
+            }
+
+            $newContents = $eelTransformer->getProcessedContent();
+
+            if ($originalContents !== $newContents) {
+                file_put_contents($filePath, $newContents);
+            }
+        }
+    }
+
+    public function execute()
+    {
+        /** Que into flow's {@see AbstractMigration::execute()} - there is no other extension point */
+        parent::execute();
+        $this->applyEelFusionOperations();
+    }
+}

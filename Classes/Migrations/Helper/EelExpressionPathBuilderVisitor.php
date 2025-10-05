@@ -25,7 +25,7 @@ final class EelExpressionPathBuilderVisitor extends MergedArrayTreeVisitor
 
     public function visitValueAssignment(ValueAssignment $valueAssignment, array $currentPath = null)
     {
-            $currentPath ?? throw new \BadMethodCallException('$currentPath is required.');
+        $currentPath ?? throw new \BadMethodCallException('$currentPath is required.');
 
         // send currentPath to eel expression value
         $valueAssignment->pathValue->visit($this, $currentPath);
