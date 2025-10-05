@@ -35,7 +35,7 @@ final class EelExpressionPathBuilderVisitor extends MergedArrayTreeVisitor
     {
         $eelExpressionPosition = $this->eelExpressionPositions->byEelExpressionValue($eelExpressionValue);
         if ($eelExpressionPosition) {
-            $eelExpressionPosition->fusionPath = FusionPath::create($currentPath);
+            $eelExpressionPosition->fusionPath = EelExpressionFusionPath::create($currentPath);
         }
     }
 }

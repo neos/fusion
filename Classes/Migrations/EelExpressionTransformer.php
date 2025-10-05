@@ -7,7 +7,7 @@ namespace Neos\Fusion\Migrations;
 use Neos\Fusion\Afx\Parser\AfxParserException;
 use Neos\Fusion\Afx\Parser\Parser as AfxParser;
 use Neos\Fusion\Core\ObjectTreeParser\Exception\ParserException;
-use Neos\Fusion\Migrations\Helper\CustomObjectTreeParser;
+use Neos\Fusion\Migrations\Helper\ExpressionCollectingObjectTreeParser;
 use Neos\Fusion\Migrations\Helper\EelExpressionPosition;
 use Neos\Fusion\Migrations\Helper\EelExpressionPositions;
 use Neos\Fusion\Migrations\Helper\PrecedingFusionFileComment;
@@ -132,8 +132,8 @@ class EelExpressionTransformer
      */
     private function findAllEelExpressions(): EelExpressionPositions
     {
-        $eelExpressions = CustomObjectTreeParser::findEelExpressions($this->fileContent);
-        $afxExpressions = CustomObjectTreeParser::findAfxExpressions($this->fileContent);
+        $eelExpressions = ExpressionCollectingObjectTreeParser::findEelExpressions($this->fileContent);
+        $afxExpressions = ExpressionCollectingObjectTreeParser::findAfxExpressions($this->fileContent);
         foreach ($afxExpressions as $afxExpression) {
             $parser = new AfxParser($afxExpression->code);
             $ast = $parser->parse();

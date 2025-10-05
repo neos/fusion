@@ -14,7 +14,7 @@ use Neos\Flow\Annotations as Flow;
  * @Flow\Proxy(false)
  * @internal
  */
-class CustomObjectTreeParser extends ObjectTreeParser
+class ExpressionCollectingObjectTreeParser extends ObjectTreeParser
 {
     /**
      * @var EelExpressionPosition[]

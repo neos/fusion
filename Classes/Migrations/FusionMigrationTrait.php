@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Neos\Fusion\Migrations;
 
 use Neos\Flow\Core\Migrations\AbstractMigration;
+use Neos\Fusion\Migrations\Helper\EelExpressionFusionPath;
 use Neos\Fusion\Migrations\Helper\RegexCommentTemplatePair;
 
 trait FusionMigrationTrait
@@ -13,6 +14,11 @@ trait FusionMigrationTrait
      * @var array<string,string>
      */
     private array $eelReplacementOperations = [];
+
+    /**
+     * @var array<string,array<string,string>>
+     */
+    private array $eelReplacementOperationsPerFusionPath = [];
 
     /**
      * @var array<RegexCommentTemplatePair>
@@ -24,12 +30,23 @@ trait FusionMigrationTrait
         $this->eelReplacementOperations[$pregSearch] = $pregReplace;
     }
 
+    /**
+     * @internal experimental api, requires to specify $fusionPath as parsed segments separated by slashes similar to the internal runtime path format
+     */
+    final public function replaceEelExpressionInsideFusionPath(string $pregSearch, string $pregReplace, string $fusionPath): void
+    {
+        $this->eelReplacementOperationsPerFusionPath[$fusionPath][$pregSearch] = $pregReplace;
+    }
+
+    /**
+     * @internal experimental api, allows to specify a comment with a place-holder like %LINE - this might not be the correct line after applying two migration to a file
+     */
     final public function addCommentsIfRegexMatches(string $regex, string $comment): void
     {
         $this->regexConditionalCommentsOperations[] = new RegexCommentTemplatePair($regex, $comment);
     }
 
-    final protected function applyEelFusionOperations(): void
+    final public function applyEelFusionOperations(): void
     {
         $filePaths = new \RegexIterator(
             new \RecursiveIteratorIterator(
@@ -39,12 +56,22 @@ trait FusionMigrationTrait
             \RecursiveRegexIterator::GET_MATCH,
         );
 
+        $pregSearches = array_keys($this->eelReplacementOperations);
+        $pregReplacements = array_values($this->eelReplacementOperations);
+
         foreach ($filePaths as $filePath => $_) {
             $originalContents = file_get_contents($filePath);
 
             $eelTransformer = EelExpressionTransformer::parse($originalContents);
-            $eelTransformer = $eelTransformer->process(function (string $expression) {
-                $newExpression = preg_replace(array_keys($this->eelReplacementOperations), array_values($this->eelReplacementOperations), $expression);
+            $eelTransformer = $eelTransformer->process(function (string $expression, EelExpressionFusionPath $currentFusionPath) use ($pregSearches, $pregReplacements) {
+                foreach ($this->eelReplacementOperationsPerFusionPath as $fusionPath => $operations) {
+                    if ($currentFusionPath->contains($fusionPath)) {
+                        $pregSearches = array_merge($pregSearches, array_keys($operations));
+                        $pregReplacements = array_merge($pregReplacements, array_values($operations));
+                    }
+                }
+
+                $newExpression = preg_replace($pregSearches, $pregReplacements, $expression);
                 if ($newExpression === null) {
                     throw new \RuntimeException(sprintf('Malformed preg replacement for expression %s', $expression), 1759641629);
                 }

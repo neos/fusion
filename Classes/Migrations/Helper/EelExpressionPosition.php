@@ -15,7 +15,7 @@ final class EelExpressionPosition
     /**
      * the fusion path leading to this eel expression. Not always filled (e.g. not in AFX).
      */
-    public FusionPath $fusionPath;
+    public EelExpressionFusionPath $fusionPath;
 
     public function __construct(
         public readonly string $eelExpression,
@@ -23,7 +23,7 @@ final class EelExpressionPosition
         public readonly int $toOffset,
         public readonly ?EelExpressionValue $eelExpressionValue = null
     ) {
-        $this->fusionPath = FusionPath::createEmpty();
+        $this->fusionPath = EelExpressionFusionPath::createEmpty();
     }
 
     public function withOffset(int $offset): self
