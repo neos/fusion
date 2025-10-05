@@ -43,15 +43,13 @@ trait FusionMigrationTrait
             $originalContents = file_get_contents($filePath);
 
             $eelTransformer = EelExpressionTransformer::parse($originalContents);
-            foreach ($this->eelReplacementOperations as $pregSearch => $pregReplace) {
-                $eelTransformer = $eelTransformer->process(function (string $expression) use ($pregSearch, $pregReplace) {
-                    $newExpression = preg_replace($pregSearch, $pregReplace, $expression);
-                    if ($newExpression === null) {
-                        throw new \RuntimeException(sprintf('Malformed preg replacement for expression %s', $expression), 1759641629);
-                    }
-                    return $newExpression;
-                });
-            }
+            $eelTransformer = $eelTransformer->process(function (string $expression) {
+                $newExpression = preg_replace(array_keys($this->eelReplacementOperations), array_values($this->eelReplacementOperations), $expression);
+                if ($newExpression === null) {
+                    throw new \RuntimeException(sprintf('Malformed preg replacement for expression %s', $expression), 1759641629);
+                }
+                return $newExpression;
+            });
 
             $eelTransformer = $eelTransformer->addCommentsIfRegexesMatch($this->regexConditionalCommentsOperations);
 
