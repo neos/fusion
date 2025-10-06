@@ -39,7 +39,7 @@ class EelExpressionTransformer
 
         // apply processing function on Eel expressions
         $eelExpressions = $eelExpressions->map(
-            fn(EelExpressionPosition $expressionPosition) => $expressionPosition->withEelExpression(
+            fn (EelExpressionPosition $expressionPosition) => $expressionPosition->withEelExpression(
                 $processingFunction($expressionPosition->eelExpression, $expressionPosition->fusionPath)
             )
         );
@@ -83,7 +83,7 @@ class EelExpressionTransformer
         $comments = $this->replaceLinePlaceholderWithinCommentTemplates($comments);
 
         if (count($comments)) {
-            $precedingComments = array_map(fn($comment) => $comment->text, $comments);
+            $precedingComments = array_map(fn ($comment) => $comment->text, $comments);
             return new EelExpressionTransformer(implode("\n", $precedingComments) . "\n" . $this->fileContent);
         } else {
             return $this;

@@ -38,7 +38,7 @@ final class EelExpressionPositions implements \IteratorAggregate
 
     public function withOffset(int $offset): self
     {
-        return $this->map(fn(EelExpressionPosition $expressionPosition) => $expressionPosition->withOffset($offset));
+        return $this->map(fn (EelExpressionPosition $expressionPosition) => $expressionPosition->withOffset($offset));
     }
 
     public function map(\Closure $mapFn): self
@@ -49,7 +49,7 @@ final class EelExpressionPositions implements \IteratorAggregate
     public function addAndSort(EelExpressionPositions $other): self
     {
         $elements = array_merge($this->elements, $other->elements);
-        usort($elements, fn(EelExpressionPosition $a, EelExpressionPosition $b) => $a->fromOffset <=> $b->fromOffset);
+        usort($elements, fn (EelExpressionPosition $a, EelExpressionPosition $b) => $a->fromOffset <=> $b->fromOffset);
 
         return new self(...$elements);
     }

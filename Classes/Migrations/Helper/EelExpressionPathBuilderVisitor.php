@@ -18,8 +18,8 @@ final class EelExpressionPathBuilderVisitor extends MergedArrayTreeVisitor
     {
         parent::__construct(
             new MergedArrayTree([]),
-            fn() => false,
-            fn() => [],
+            fn () => false,
+            fn () => [],
         );
     }
 
