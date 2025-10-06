@@ -24,7 +24,7 @@ class EelExpressionTransformer
     {
     }
 
-    public static function parse(string $fileContent): self
+    public static function forContent(string $fileContent): self
     {
         return new self($fileContent);
     }

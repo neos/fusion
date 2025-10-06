@@ -100,7 +100,7 @@ class FusionMigrationTest extends TestCase
     }
 
     /** @test */
-    public function doesReplacementInAllFusionFilesOfPackage(): void
+    public function doesReplacementFusionFileOfPackage(): void
     {
         $stream = vfsStream::setup('fusion', null, [
             "Target.Package" => [
@@ -140,6 +140,142 @@ class FusionMigrationTest extends TestCase
                                 value = ${newVariable}
                             }
                             Fusion
+                        ]
+                    ]
+                ],
+            ]
+        ];
+
+        self::assertEquals(
+            $expectedStructure,
+            $newStructure
+        );
+    }
+
+    /** @test */
+    public function doesMultipleReplacementInAllFusionFilesOfPackage(): void
+    {
+        $stream = vfsStream::setup('fusion', null, [
+            "Target.Package" => [
+                'Resources' => [
+                    'Private' => [
+                        'Fusion' => [
+                            'SomeComponent.fusion' => <<<'Fusion'
+                            prototype(Neos.Fusion.Test:Value) < prototype(Neos.Fusion:Value) {
+                                value = ${someVariable}
+                            }
+                            Fusion,
+                            'Nested' => [
+                                'OtherComponent.fusion' => <<<'Fusion'
+                                foo = Neos.Fusion:Value {
+                                    value = ${someVariable + My.OldHelper('abc')}
+                                }
+                                Fusion
+                            ]
+                        ]
+                    ]
+                ],
+            ]
+        ]);
+
+        $this->targetPackageData = [
+            'path' => 'vfs://fusion/Target.Package'
+        ];
+
+        $this->replaceEelExpression('/someVariable/', 'newVariable');
+        $this->replaceEelExpression('/My\.OldHelper\(([^)]*)\)/', 'My.NewHelper(123, $1)');
+
+        $this->applyEelFusionOperations();
+
+        $structureVisitor = new vfsStreamStructureVisitor();
+        $structureVisitor->visit($stream->getChild('Target.Package'));
+        $newStructure = $structureVisitor->getStructure();
+
+        $expectedStructure = [
+            "Target.Package" => [
+                'Resources' => [
+                    'Private' => [
+                        'Fusion' => [
+                            'SomeComponent.fusion' => <<<'Fusion'
+                            prototype(Neos.Fusion.Test:Value) < prototype(Neos.Fusion:Value) {
+                                value = ${newVariable}
+                            }
+                            Fusion,
+                            'Nested' => [
+                                'OtherComponent.fusion' => <<<'Fusion'
+                                foo = Neos.Fusion:Value {
+                                    value = ${newVariable + My.NewHelper(123, 'abc')}
+                                }
+                                Fusion
+                            ]
+                        ]
+                    ]
+                ],
+            ]
+        ];
+
+        self::assertEquals(
+            $expectedStructure,
+            $newStructure
+        );
+    }
+
+    /** @test */
+    public function doesFusionPrototypeNameReplacementInAllFusionFilesOfPackage(): void
+    {
+        $stream = vfsStream::setup('fusion', null, [
+            "Target.Package" => [
+                'Resources' => [
+                    'Private' => [
+                        'Fusion' => [
+                            'SomeComponent.fusion' => <<<'Fusion'
+                            prototype(Neos.Fusion.Test:Custom)  < prototype(Neos.Fusion:Array) {
+                              key = ${someVariable}
+                            }
+                            Fusion,
+                            'Nested' => [
+                                'OtherComponent.fusion' => <<<'Fusion'
+                                foo = Neos.Fusion:Array {
+                                    key = 'value'
+                                }
+                                Fusion
+                            ]
+                        ]
+                    ]
+                ],
+            ]
+        ]);
+
+        $this->targetPackageData = [
+            'path' => 'vfs://fusion/Target.Package'
+        ];
+
+        $this->replaceEelExpression('/someVariable/', 'newVariable');
+        $this->renameFusionPrototype('Neos.Fusion:Array', 'Neos.Fusion:Join');
+
+        $this->applyEelFusionOperations();
+
+        $structureVisitor = new vfsStreamStructureVisitor();
+        $structureVisitor->visit($stream->getChild('Target.Package'));
+        $newStructure = $structureVisitor->getStructure();
+
+        $expectedStructure = [
+            "Target.Package" => [
+                'Resources' => [
+                    'Private' => [
+                        'Fusion' => [
+                            'SomeComponent.fusion' => <<<'Fusion'
+                            prototype(Neos.Fusion.Test:Custom)  < prototype(Neos.Fusion:Join) {
+                              key = ${newVariable}
+                            }
+                            Fusion,
+                            'Nested' => [
+                                'OtherComponent.fusion' => <<<'Fusion'
+                                foo = Neos.Fusion:Join {
+                                    key = 'value'
+                                }
+                                Fusion
+                            ]
                         ]
                     ]
                 ],
