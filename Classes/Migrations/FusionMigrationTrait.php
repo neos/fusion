@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Neos\Fusion\Migrations;
 
 use Neos\Flow\Core\Migrations\AbstractMigration;
+use Neos\Fusion\Migrations\EelExpression\EelExpressionFusionPath;
+use Neos\Fusion\Migrations\EelExpression\EelExpressionTransformer;
+use Neos\Fusion\Migrations\EelExpression\RegexCommentTemplatePair;
 use Neos\Fusion\Migrations\FusionPrototype\FusionPrototypeNameAddComment;
 use Neos\Fusion\Migrations\FusionPrototype\FusionPrototypeNameReplacement;
 use Neos\Fusion\Migrations\FusionPrototype\FusionPrototypeTransformer;
-use Neos\Fusion\Migrations\Helper\EelExpressionFusionPath;
-use Neos\Fusion\Migrations\Helper\RegexCommentTemplatePair;
 
 trait FusionMigrationTrait
 {

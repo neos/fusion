@@ -2,23 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Neos\Fusion\Migrations;
+namespace Neos\Fusion\Migrations\EelExpression;
 
+use Neos\Flow\Annotations as Flow;
 use Neos\Fusion\Afx\Parser\AfxParserException;
 use Neos\Fusion\Afx\Parser\Parser as AfxParser;
 use Neos\Fusion\Core\ObjectTreeParser\Exception\ParserException;
-use Neos\Fusion\Migrations\Helper\ExpressionCollectingObjectTreeParser;
-use Neos\Fusion\Migrations\Helper\EelExpressionPosition;
-use Neos\Fusion\Migrations\Helper\EelExpressionPositions;
-use Neos\Fusion\Migrations\Helper\PrecedingFusionFileComment;
-use Neos\Fusion\Migrations\Helper\RegexCommentTemplatePair;
-use Neos\Flow\Annotations as Flow;
 
 /**
  * @Flow\Proxy(false)
  * @internal
  */
-class EelExpressionTransformer
+final class EelExpressionTransformer
 {
     private function __construct(private readonly string $fileContent)
     {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Neos\Fusion\Migrations\Helper;
+namespace Neos\Fusion\Migrations\EelExpression;
 
 use Neos\Flow\Annotations as Flow;
 
@@ -9,7 +9,7 @@ use Neos\Flow\Annotations as Flow;
  * @Flow\Proxy(false)
  * @internal
  */
-class RegexCommentTemplatePair
+final class RegexCommentTemplatePair
 {
     public function __construct(
         public readonly string $regex,

@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace Neos\Fusion\Migrations\FusionPrototype;
 
-class FusionPrototypeNameReplacement
+use Neos\Flow\Annotations as Flow;
+
+/**
+ * @Flow\Proxy(false)
+ * @internal
+ */
+final class FusionPrototypeNameReplacement
 {
     public function __construct(
         public readonly string $oldName,

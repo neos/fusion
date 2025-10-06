@@ -1,6 +1,6 @@
 <?php
 
-namespace Neos\Fusion\Migrations\Helper;
+namespace Neos\Fusion\Migrations\EelExpression;
 
 use Neos\Flow\Annotations as Flow;
 

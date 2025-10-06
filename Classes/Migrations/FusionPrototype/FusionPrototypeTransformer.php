@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Neos\Fusion\Migrations\FusionPrototype;
 
+use Neos\Flow\Annotations as Flow;
+
 /**
  * @Flow\Proxy(false)
  * @internal
  */
-class FusionPrototypeTransformer
+final class FusionPrototypeTransformer
 {
     private function __construct(private readonly string $fileContent)
     {

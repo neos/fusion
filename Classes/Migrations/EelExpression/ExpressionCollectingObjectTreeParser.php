@@ -1,6 +1,6 @@
 <?php
 
-namespace Neos\Fusion\Migrations\Helper;
+namespace Neos\Fusion\Migrations\EelExpression;
 
 use Neos\Fusion\Core\ObjectTreeParser\Ast\AbstractPathValue;
 use Neos\Fusion\Core\ObjectTreeParser\Ast\DslExpressionValue;
@@ -14,7 +14,7 @@ use Neos\Flow\Annotations as Flow;
  * @Flow\Proxy(false)
  * @internal
  */
-class ExpressionCollectingObjectTreeParser extends ObjectTreeParser
+final class ExpressionCollectingObjectTreeParser extends ObjectTreeParser
 {
     /**
      * @var EelExpressionPosition[]
