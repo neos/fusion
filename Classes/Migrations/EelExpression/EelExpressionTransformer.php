@@ -74,6 +74,10 @@ final class EelExpressionTransformer
         $precedingComments = array_map(fn ($comment) => '// ' . $this->commentPrefix . $comment->text, $comments);
 
         if (count($precedingComments)) {
+            if (str_contains($this->fileContent, '// ' . $this->commentPrefix) || str_contains($this->fileContent, '// TODO 9.0 migration:')) {
+                ($this->onWarning)('No migration todo comments written as the migration was already run.');
+                return $this;
+            }
             return new self(implode("\n", $precedingComments) . "\n" . $this->fileContent, $this->commentPrefix, $this->onWarning);
         } else {
             return $this;
