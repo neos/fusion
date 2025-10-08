@@ -12,13 +12,13 @@ use Neos\Flow\Annotations as Flow;
  */
 final class FusionPrototypeTransformer
 {
-    private function __construct(private readonly string $fileContent)
+    private function __construct(private readonly string $fileContent, private readonly string $commentPrefix, private readonly \Closure $onWarning)
     {
     }
 
-    public static function forContent(string $fileContent): self
+    public static function forContent(string $fileContent, string $commentPrefix, \Closure $onWarning): self
     {
-        return new self($fileContent);
+        return new self($fileContent, $commentPrefix, $onWarning);
     }
 
     /**
@@ -40,7 +40,8 @@ final class FusionPrototypeTransformer
             $fileContent = preg_replace($pattern, $replacement, $fileContent, count: $replacementCount);
 
             if ($replacementCount > 0 && $fusionPrototypeNameReplacement->comment) {
-                $comments[] = '// TODO 9.0 migration: ' . $fusionPrototypeNameReplacement->comment;
+                $comments[] = '// ' . $this->commentPrefix . $fusionPrototypeNameReplacement->comment;
+                ($this->onWarning)($fusionPrototypeNameReplacement->comment);
             }
         }
 
@@ -48,7 +49,7 @@ final class FusionPrototypeTransformer
             $fileContent = implode("\n", $comments) . "\n" . $fileContent;
         }
 
-        return new self($fileContent);
+        return new self($fileContent, $this->commentPrefix, $this->onWarning);
     }
 
     /**
@@ -65,7 +66,8 @@ final class FusionPrototypeTransformer
             preg_match($pattern, $fileContent, $matches);
 
             if (count($matches) > 0) {
-                $comments[] = "// " . $fusionPrototypeNameAddComment->comment;
+                $comments[] = '// ' . $this->commentPrefix . $fusionPrototypeNameAddComment->comment;
+                ($this->onWarning)($fusionPrototypeNameAddComment->comment);
             }
         }
 
@@ -73,7 +75,7 @@ final class FusionPrototypeTransformer
             $fileContent = implode("\n", $comments) . "\n" . $fileContent;
         }
 
-        return new self($fileContent);
+        return new self($fileContent, $this->commentPrefix, $this->onWarning);
     }
 
     public function getProcessedContent(): string

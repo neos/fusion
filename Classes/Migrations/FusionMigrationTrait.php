@@ -11,6 +11,7 @@ use Neos\Fusion\Migrations\EelExpression\RegexCommentTemplatePair;
 use Neos\Fusion\Migrations\FusionPrototype\FusionPrototypeNameAddComment;
 use Neos\Fusion\Migrations\FusionPrototype\FusionPrototypeNameReplacement;
 use Neos\Fusion\Migrations\FusionPrototype\FusionPrototypeTransformer;
+use Neos\Utility\Files;
 
 trait FusionMigrationTrait
 {
@@ -114,7 +115,14 @@ trait FusionMigrationTrait
 
             $newContents = $eelTransformer->getProcessedContent();
 
-            $fusionPrototypeTransformer = FusionPrototypeTransformer::forContent($newContents);
+            $fusionPrototypeTransformer = FusionPrototypeTransformer::forContent(
+                $newContents,
+                sprintf('TODO %s ', $this->getIdentifier()),
+                fn (string $comment) => $this->showWarning(sprintf('File %s: %s', Files::getRelativePath(
+                    $this->targetPackageData['path'],
+                    $filePath
+                ), $comment))
+            );
 
             if ($this->fusionPrototypeNameReplacements !== []) {
                 $fusionPrototypeTransformer = $fusionPrototypeTransformer->processFusionPrototypeNameReplacements(

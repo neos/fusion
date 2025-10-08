@@ -34,6 +34,6 @@ class Version20251006080506 extends AbstractMigration
         $this->renameFusionPrototype('Neos.Fusion:Collection', 'Neos.Fusion:Loop', 'Migration of Neos.Fusion:Collection to Neos.Fusion:Loop needs manual action. The key `collection` has to be renamed to `items` which cannot be done automatically');
         $this->renameFusionPrototype('Neos.Fusion:RawCollection', 'Neos.Fusion:Map', 'Migration of Neos.Fusion:RawCollection to Neos.Fusion:Map needs manual action. The key `collection` has to be renamed to `items` which cannot be done automatically');
 
-        $this->addCommentToFusionPrototype('Neos.Fusion:Attributes', 'TODO 9.0 migration: Neos.Fusion:Attributes has been removed without a replacement. You need to replace it by the property attributes in "Neos.Fusion:Tag" or apply the Eel helper "Neos.Array.toHtmlAttributesString(attributes)".');
+        $this->addCommentToFusionPrototype('Neos.Fusion:Attributes', 'Neos.Fusion:Attributes will be removed without a replacement in Neos 9.0. You need to replace it by the property attributes in "Neos.Fusion:Tag" or apply the Eel helper "Neos.Array.toHtmlAttributesString(attributes)".');
     }
 }

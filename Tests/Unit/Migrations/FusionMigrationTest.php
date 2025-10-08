@@ -24,6 +24,11 @@ class FusionMigrationTest extends TestCase
         $this->eelReplacementOperations = [];
     }
 
+    public function getIdentifier(): string
+    {
+        return 'Neos.Fusion-XXX';
+    }
+
     /** @test */
     public function doesNoReplacementsIfPackageDoesNotContainFusionFiles(): void
     {
