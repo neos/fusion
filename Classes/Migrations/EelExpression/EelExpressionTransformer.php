@@ -15,13 +15,13 @@ use Neos\Fusion\Core\ObjectTreeParser\Exception\ParserException;
  */
 final class EelExpressionTransformer
 {
-    private function __construct(private readonly string $fileContent)
+    private function __construct(private readonly string $fileContent, private readonly string $commentPrefix, private readonly \Closure $onWarning)
     {
     }
 
-    public static function forContent(string $fileContent): self
+    public static function forContent(string $fileContent, string $commentPrefix, \Closure $onWarning): self
     {
-        return new self($fileContent);
+        return new self($fileContent, $commentPrefix, $onWarning);
     }
 
     /**
@@ -39,17 +39,7 @@ final class EelExpressionTransformer
             )
         );
 
-        return new self($this->render($eelExpressions));
-    }
-
-    /**
-     * @throws ParserException
-     * @throws AfxParserException
-     */
-    public function addCommentsIfRegexMatches(string $regex, string $comment): self
-    {
-        $regexCommentTemplatePair = new RegexCommentTemplatePair($regex, $comment);
-        return $this->addCommentsIfRegexesMatch([$regexCommentTemplatePair]);
+        return new self($this->render($eelExpressions), $this->commentPrefix, $this->onWarning);
     }
 
     /**
@@ -77,9 +67,14 @@ final class EelExpressionTransformer
 
         $comments = $this->replaceLinePlaceholderWithinCommentTemplates($comments);
 
-        if (count($comments)) {
-            $precedingComments = array_map(fn ($comment) => $comment->text, $comments);
-            return new EelExpressionTransformer(implode("\n", $precedingComments) . "\n" . $this->fileContent);
+        foreach ($comments as $comment) {
+            ($this->onWarning)($comment->text);
+        }
+
+        $precedingComments = array_map(fn ($comment) => '// ' . $this->commentPrefix . $comment->text, $comments);
+
+        if (count($precedingComments)) {
+            return new self(implode("\n", $precedingComments) . "\n" . $this->fileContent, $this->commentPrefix, $this->onWarning);
         } else {
             return $this;
         }

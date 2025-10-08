@@ -215,7 +215,7 @@ class EelExpressionTransformerTest extends TestCase
     {
         self::assertEquals(
             $expectedOutput,
-            EelExpressionTransformer::forContent($input)->process($eelModifier)->getProcessedContent()
+            EelExpressionTransformer::forContent($input, '', fn () => '')->process($eelModifier)->getProcessedContent()
         );
     }
 }
