@@ -126,8 +126,14 @@ final class EelExpressionTransformer
      */
     private function findAllEelExpressions(): EelExpressionPositions
     {
-        $eelExpressions = ExpressionCollectingObjectTreeParser::findEelExpressions($this->fileContent);
-        $afxExpressions = ExpressionCollectingObjectTreeParser::findAfxExpressions($this->fileContent);
+        try {
+            $eelExpressions = ExpressionCollectingObjectTreeParser::findEelExpressions($this->fileContent);
+            $afxExpressions = ExpressionCollectingObjectTreeParser::findAfxExpressions($this->fileContent);
+        } catch (ParserException $exception) {
+            ($this->onWarning)($exception->getMessage());
+            return EelExpressionPositions::fromArray([]);
+        }
+
         foreach ($afxExpressions as $afxExpression) {
             $parser = new AfxParser($afxExpression->code);
             $ast = $parser->parse();
