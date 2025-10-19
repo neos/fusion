@@ -181,6 +181,39 @@ class EelExpressionTransformerTest extends TestCase
             Fusion,
         ];
 
+        // bugfix preserve output of single EEL expression in afx
+        yield 'L ' . __LINE__ => [
+            fn (string $eelExpression) => $eelExpression,
+            <<<'Fusion'
+            prototype(Neos.Fusion.Test:Value) < prototype(Neos.Fusion:Value) {
+                value = afx`{props.value}`
+            }
+            Fusion,
+            <<<'Fusion'
+            prototype(Neos.Fusion.Test:Value) < prototype(Neos.Fusion:Value) {
+                value = afx`{props.value}`
+            }
+            Fusion,
+        ];
+
+        yield 'L ' . __LINE__ => [
+            fn (string $eelExpression) => str_replace('someVariable', 'myNewVariable', $eelExpression),
+            <<<'Fusion'
+            prototype(Neos.Fusion.Test:Value) < prototype(Neos.Fusion:Value) {
+                value = afx`
+                    <span>{someVariable}</span>
+                    {someVariable}`
+            }
+            Fusion,
+            <<<'Fusion'
+            prototype(Neos.Fusion.Test:Value) < prototype(Neos.Fusion:Value) {
+                value = afx`
+                    <span>{myNewVariable}</span>
+                    {myNewVariable}`
+            }
+            Fusion,
+        ];
+
         yield 'L ' . __LINE__ => [
             fn (string $eelExpression) => str_replace('someVariable', 'myNewVariable', $eelExpression),
             <<<'Fusion'

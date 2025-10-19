@@ -186,8 +186,8 @@ final class EelExpressionTransformer
             // We found an Eel expression in a spread operation
             $result[] = new EelExpressionPosition(
                 $afxElement['payload']['payload'],
-                $afxElement['from'] + 5, // advance beyond '{...'
-                $afxElement['to'],
+                $afxElement['from'] + 1,
+                $afxElement['to'] + 2,
                 null
             );
             return;
@@ -197,8 +197,8 @@ final class EelExpressionTransformer
             // We found an Eel expression
             $result[] = new EelExpressionPosition(
                 $afxElement['payload'],
-                $afxElement['from'] + 2, // advance beyond '{'
-                $afxElement['to'],
+                $afxElement['from'] + 1,
+                $afxElement['to'] + 2,
                 null
             );
         }
