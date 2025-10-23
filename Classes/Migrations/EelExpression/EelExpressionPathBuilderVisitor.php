@@ -23,7 +23,7 @@ final class EelExpressionPathBuilderVisitor extends MergedArrayTreeVisitor
         );
     }
 
-    public function visitValueAssignment(ValueAssignment $valueAssignment, array $currentPath = null)
+    public function visitValueAssignment(ValueAssignment $valueAssignment, ?array $currentPath = null)
     {
         $currentPath ?? throw new \BadMethodCallException('$currentPath is required.');
 
@@ -31,7 +31,7 @@ final class EelExpressionPathBuilderVisitor extends MergedArrayTreeVisitor
         $valueAssignment->pathValue->visit($this, $currentPath);
     }
 
-    public function visitEelExpressionValue(EelExpressionValue $eelExpressionValue, array $currentPath = null)
+    public function visitEelExpressionValue(EelExpressionValue $eelExpressionValue, ?array $currentPath = null)
     {
         $eelExpressionPosition = $this->eelExpressionPositions->byEelExpressionValue($eelExpressionValue);
         if ($eelExpressionPosition) {
